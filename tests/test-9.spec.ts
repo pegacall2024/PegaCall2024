@@ -1,0 +1,34 @@
+import { test, expect } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('https://lab-02622-bos.lab-internal.pega.com/prweb/app/default/_56mEsR4RqBouCrZGfkkFF8v406BUOZt*/!STANDARD');
+  await page.getByPlaceholder('User name').click();
+  await page.getByPlaceholder('User name').fill('cacsrcti2');
+  await page.getByPlaceholder('User name').press('Tab');
+  await page.getByPlaceholder('Password', { exact: true }).fill('install123!');
+  await page.getByPlaceholder('Password', { exact: true }).press('Enter');
+  await page.getByRole('button', { name: 'Log in' }).click();
+  await page.getByLabel('Phone panel').click();
+  await page.getByLabel('CTI Link').selectOption('12');
+  await page.getByLabel('Extension').click();
+  await page.getByLabel('Extension').fill('2983');
+  await page.getByLabel('Extension').press('Tab');
+  await page.getByLabel('Agent ID').fill('2403');
+  await page.getByLabel('Agent ID').press('Tab');
+  await page.getByLabel('Password').fill('2403');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.locator('header').filter({ hasText: '2983' }).click();
+  await page.locator('article').filter({ hasText: '2983StatusArrow down to open' }).getByTestId(':menu-button:').click();
+  await page.getByLabel('Hang up').getByTestId(':summary-item:primary').click();
+  await page.locator('[id="_rvmnk0s55-combobox"]').getByLabel('Open combobox list').click();
+  await page.getByText('Ready').click();
+  await page.locator('article').filter({ hasText: 'Transferred call...Unknown' }).locator('span').first().click();
+  await page.getByText('not verified').first().click();
+  await page.getByRole('button', { name: 'Accept' }).click();
+  await page.getByTestId(':summary-item:primary').click();
+  await page.getByTestId(':combo-box:control').click();
+  await page.getByTestId(':combo-box:control').click();
+  await page.locator('div').filter({ hasText: 'StatusArrow down to open,' }).first().click();
+  await page.getByTestId(':summary-item:actions').getByTestId(':menu-button:').click();
+  await page.getByLabel('Hang up').getByTestId(':summary-item:primary').click();
+});
