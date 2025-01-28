@@ -2,63 +2,25 @@ import { test, expect, chromium } from '@playwright/test';
 
 test.setTimeout(990000);
 test.use({ viewport: { width: 1600, height: 940 } })
+import { launchBrowsers, login,GenesysCloudLogin,GenesysCloudLogout,UnknownCustomerVerification,GenesysCloudTransferCall,GCAcceptScreenpop,GCAttachInteraction,WrapUp,GenesysCloudMute,VerifiedCustomerVerification,screenPopVerification,GenesysCloudDisconnect,
+  GenesysCloudConsult,GenesysCloudCompleteConsult,GenesysCloudBlind,launchThirdBrowser
+  } from './utils1';
+  const instanceUrl = 'https://lab-02183-hyd.lab-internal.pega.com/prweb';
+  const chatUrl = 'https://veishydalm09279:8443/uplus/Genesys/index.html';
+
 
 test('Genesys Cloud Chat blind transfer', async () => {
 
 
-  
-
-
-  const browser1 = await chromium.launch({
-    args: [
-      '--use-fake-ui-for-media-stream', // Automatically allow media stream
-      '--use-fake-device-for-media-stream' // Use fake device for media stream
-    ]
-  });
-  const context1 = await browser1.newContext({
-    permissions: ['microphone']
-  });
-  const page1 = await context1.newPage();
-  await context1.grantPermissions(['microphone'], { origin: 'https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD' });
-  await page1.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD');
-
-
-  // Launch the second browser instance
-  const browser2 = await chromium.launch({
-    args: [
-      '--use-fake-ui-for-media-stream', // Automatically allow media stream
-      '--use-fake-device-for-media-stream' // Use fake device for media stream
-    ]
-  });
-  const context2 = await browser2.newContext({
-    permissions: ['microphone']
-  });
-  const page2 = await context2.newPage();
-  await context2.grantPermissions(['microphone'], { origin: 'https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD' });
-  await page2.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD');
-
-
+  const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+   
+     await login(page1, 'cacsrcti1', 'install123!');  
+         
+       await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
   // Launch the Third browser instance
 
-  const browser3 = await chromium.launch({
-    args: [
-      '--use-fake-ui-for-media-stream', // Automatically allow media stream
-      '--use-fake-device-for-media-stream' // Use fake device for media stream
-    ]
-
-  });
-
-  const context3 = await browser3.newContext({
-    permissions: ['microphone'],
-    ignoreHTTPSErrors: true // Ignore HTTPS errors
-  });
-  const page3 = await context3.newPage();
-  await context3.clearCookies();
-  await context3.clearPermissions();
-  await context3.storageState({ path: 'state.json' });
-
-  await context3.grantPermissions(['microphone'], { origin: 'https://veishydalm09279:8443/uplus/Genesys/index.html' });
-  await page3.goto('https://veishydalm09279:8443/uplus/Genesys/index.html', { waitUntil: 'load' });
+  
+  const { browser3, context3, page3 } = await launchThirdBrowser(chatUrl);
 
 
 

@@ -1,35 +1,23 @@
 import { test, expect, chromium } from '@playwright/test';
 
 import { makeCallthree, makeCalltwo } from './utils';
+import { launchBrowsers, login,GenesysCloudLogin,GenesysCloudLogout,UnknownCustomerVerification,GenesysCloudTransferCall,GCAcceptScreenpop,GCAttachInteraction,WrapUp,GenesysCloudMute,VerifiedCustomerVerification,screenPopVerification,GenesysCloudDisconnect,
+  GenesysCloudConsult,GenesysCloudCompleteConsult,GenesysCloudBlind,launchThirdBrowser,GenesysCloudCloseExistingInteraction,editCallbackNumber,callBackTransfer
+  } from './utils1';
 
 test.setTimeout(590000);
 test.use({viewport:{width:1600,height:940}})
 
+const instanceUrl = 'https://lab-02183-hyd.lab-internal.pega.com/prweb';
+
 test('Genesys Cloud Validate the Event Name in alert TEST-192268', async () => {
 
 
-  const browser1 = await chromium.launch({
-    args: [
-      '--use-fake-ui-for-media-stream', // Automatically allow media stream
-      '--use-fake-device-for-media-stream' // Use fake device for media stream
-    ]
-  });
-  const context1 = await browser1.newContext({
-    permissions: ['microphone']
-  });
-  const page1 = await context1.newPage();
-  await context1.grantPermissions(['microphone'], { origin: 'https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD' });
-  await page1.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD');
-
-  await page1.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD');
-  await page1.getByPlaceholder('User name').click();
-  await page1.getByPlaceholder('User name').fill('cacsrcti1');
-  await page1.getByPlaceholder('User name').press('Tab');
-  await page1.getByPlaceholder('Password', { exact: true }).fill('install123!');
-  await page1.getByRole('button', { name: 'Log in' }).click();
-  await page1.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/PegaCallC11nSample');
-  await page1.getByTestId(':privacy-dialog:accept').click();
-  await page1.getByRole('heading', { name: 'My dashboard' }).click();
+  const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+      
+        await login(page1, 'cacsrcti1', 'install123!');  
+            
+          
 
 
   await page1.evaluate(() => {
@@ -73,17 +61,7 @@ test('Genesys Cloud Validate the Event Name in alert TEST-192268', async () => {
   });
 
 
-  await page1.getByLabel('Phone panel').click();
-  //await page.getByLabel('CTI Link').selectOption('16');
-  await page1.selectOption('select[label="CTI Link"]', { label: 'GenesysCloudC11N' });
-  await page1.getByRole('button', { name: 'Login' }).click();
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByPlaceholder('Email Address').click();
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByPlaceholder('Email Address').fill('salavagopi.krishna@in.pega.com');
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByPlaceholder('Email Address').press('Tab');
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByPlaceholder('Password').fill('Pegacall++2024');
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Log In' }).click();
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByLabel('Status List Dropdown').click();
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'On Queue' }).click();
+  await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
 
   
 
@@ -113,7 +91,7 @@ test('Genesys Cloud Validate the Event Name in alert TEST-192268', async () => {
   console.log(`Clicked link at Offering: ${new Date().toLocaleString()}`);
   await page1.waitForTimeout(8000);
 
-  await verifyEventName('CONNECTED');
+  await verifyEventName('Connected');
   console.log(`Clicked link at connected: ${new Date().toLocaleString()}`);
   
 
@@ -138,17 +116,7 @@ console.log(`Clicked link at Retrieved: ${new Date().toLocaleString()}`);
  console.log(`Clicked link at Disconnected: ${new Date().toLocaleString()}`);
  
  await page1.waitForTimeout(2000);
- await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Select wrap-up code Dropdown' }).click();
- await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('option', { name: 'Default Wrap-up Code' }).locator('slot').click();
- await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Done' }).click();
- 
- 
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByLabel('Status List Dropdown').click();  
-  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByLabel('Log Out').click(); 
-
-  
-  await page1.getByRole('button', { name: 'cacsrc11n' }).click();
-  await page1.getByText('Log off').click();
+ await GenesysCloudLogout(page1);  
 
   
 });

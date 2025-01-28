@@ -7,6 +7,7 @@ test.use({viewport:{width:1600,height:940}})
 
 test('Genesys Cloud transfer', async () => {
 
+  const instanceUrl = 'https://memtest-stg1.platform.integration.pegaservice.net/prweb/';
 
   const browser1 = await chromium.launch({
     args: [
@@ -18,10 +19,8 @@ test('Genesys Cloud transfer', async () => {
     permissions: ['microphone']
   });
   const page1 = await context1.newPage();
-  await context1.grantPermissions(['microphone'], { origin: 'https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD' });
-  await page1.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD');
-
-
+  await context1.grantPermissions(['microphone'], { origin: instanceUrl });
+  await page1.goto(instanceUrl);
 
 
 
@@ -39,20 +38,20 @@ test('Genesys Cloud transfer', async () => {
     permissions: ['microphone']
   });
   const page2 = await context2.newPage();
-  await context2.grantPermissions(['microphone'], { origin: 'https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD' });
-  await page2.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD');
+  await context2.grantPermissions(['microphone'], { origin: instanceUrl });
+  await page2.goto(instanceUrl);
 
 
 
 
-  await page1.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/default/2mCjkZJmJzIb2YFZHOYfCw*/!STANDARD');
+  await page1.goto(instanceUrl);
   await page1.getByPlaceholder('User name').click();
   await page1.getByPlaceholder('User name').fill('cacsrcti1');
   await page1.getByPlaceholder('User name').press('Tab');
   await page1.getByPlaceholder('Password', { exact: true }).fill('install123!');
   await page1.getByRole('button', { name: 'Log in' }).click();
-  await page1.goto('https://lab-04141-bos.lab-internal.pega.com/prweb/app/PegaCallC11nSample');
-  await page1.getByTestId(':privacy-dialog:accept').click();
+  await page1.goto(instanceUrl);
+  //await page1.getByTestId(':privacy-dialog:accept').click();
   await page1.waitForTimeout(2000);
   await page1.getByLabel('Phone panel').click();
   //await page.getByLabel('CTI Link').selectOption('16');
@@ -69,6 +68,7 @@ test('Genesys Cloud transfer', async () => {
   await page3.getByRole('button', { name: 'Log In' }).click();
   await page1.locator('#genesysCloudsoftPhone').contentFrame().getByLabel('Status List Dropdown').click();
   await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'On Queue' }).click();
+  
 
   await makeCallthree('917816615965');
 
@@ -77,7 +77,7 @@ test('Genesys Cloud transfer', async () => {
   await page2.getByPlaceholder('User name').press('Tab');
   await page2.getByPlaceholder('Password', { exact: true }).fill('install123!');
   await page2.getByRole('button', { name: 'Log in' }).click();
-  await page2.getByTestId(':privacy-dialog:accept').click();
+ // await page2.getByTestId(':privacy-dialog:accept').click();
   await page2.waitForTimeout(2000);
   await page2.getByLabel('Phone panel').click();
   await page2.selectOption('select[label="CTI Link"]', { label: 'GenesysCloudC11N' });

@@ -1,118 +1,391 @@
 import { test, expect, chromium } from '@playwright/test';
 
-import { makeCalltwo } from './utils';
+import { makeCallthree, makeCallthreeUnknown, makeCalltwo } from './utils';
+import { launchBrowsers, login,GenesysCloudLogin,GenesysCloudLogout,UnknownCustomerVerification,GenesysCloudTransferCall,GCAcceptScreenpop,GCAttachInteraction,WrapUp,GenesysCloudMute,VerifiedCustomerVerification,screenPopVerification,GenesysCloudDisconnect,
+  GenesysCloudConsult,GenesysCloudCompleteConsult,GenesysCloudBlind,launchThirdBrowser,GenesysCloudCloseExistingInteraction,editCallbackNumber,callBackTransfer
+  } from './utils1';
 
 test.setTimeout(590000);
 test.use({viewport:{width:1600,height:940}})
 
-test('Finesse V+D transfer', async () => {
-  // Launch the first browser instance
-  const browser1 = await chromium.launch();
-  const context1 = await browser1.newContext();
-  const page1 = await context1.newPage();
-  await page1.goto('https://lab-02622-bos.lab-internal.pega.com/prweb/app/default/_56mEsR4RqBouCrZGfkkFF8v406BUOZt*/!STANDARD');
+const instanceUrl = 'https://crm-insprint-2510.testsvc.integration.pegaservice.net/prweb/';
 
-  // Launch the second browser instance
-  const browser2 = await chromium.launch();
-  const context2 = await browser2.newContext();
-  const page2 = await context2.newPage();
-  await page2.goto('https://lab-02622-bos.lab-internal.pega.com/prweb/app/default/_56mEsR4RqBouCrZGfkkFF8v406BUOZt*/!STANDARD');
+test('Genesys Cloud consult call only', async () => {
 
-  await page1.getByPlaceholder('User name').click();
-  await page1.getByPlaceholder('User name').fill('cacsrcti1');
-  await page1.getByPlaceholder('User name').press('Tab');
-  await page1.getByPlaceholder('Password', { exact: true }).fill('install123!');
-  await page1.getByRole('button', { name: 'Log in' }).click();
-  await page1.getByLabel('Phone panel').click();
-  await page1.selectOption('select[label="CTI Link"]', { label: 'Finesse12C11N' });
-  await page1.getByLabel('Extension').click();  
-  await page1.getByLabel('Extension').fill('2962');
-  await page1.getByLabel('Extension').press('Tab');
-  await page1.getByLabel('Agent ID').fill('2462');
-  await page1.getByLabel('Agent ID').press('Tab');
-  await page1.getByLabel('Password').fill('2962');
-  await page1.getByRole('button', { name: 'Login' }).dblclick();
-  await page1.locator('div').filter({ hasText: '2962' }).first().click();
-  await page1.getByLabel('Status').click();
-  await page1.getByText('Break-Cofee').click();
-  await page1.getByLabel('Status').click();
-  await page1.getByText('•Ready').click();
+ // Launch the first browser instance
+ //const instanceUrl = 'https://lab-02183-hyd.lab-internal.pega.com/prweb';
+
+  const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+
+  await login(page1, 'cacsrcti1', 'install123!');  
   
+  await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
 
-  await page2.getByPlaceholder('User name').click();
-  await page2.getByPlaceholder('User name').fill('cacsrcti2');
-  await page2.getByPlaceholder('User name').press('Tab');
-  await page2.getByPlaceholder('Password', { exact: true }).fill('install123!');
-  await page2.getByRole('button', { name: 'Log in' }).click();
-  await page2.getByLabel('Phone panel').click();
-  await page2.selectOption('select[label="CTI Link"]', { label: 'Finesse12C11N' });
-  await page2.getByLabel('Extension').click();  
-  await page2.getByLabel('Extension').fill('2963');
-  await page2.getByLabel('Extension').press('Tab');
-  await page2.getByLabel('Agent ID').fill('2463');
-  await page2.getByLabel('Agent ID').press('Tab');
-  await page2.getByLabel('Password').fill('2963');
-  await page2.getByRole('button', { name: 'Login' }).click();
-  await page2.getByRole('button', { name: 'Login' }).click();
-  await page2.locator('div').filter({ hasText: '2963' }).first().click();
-  await page2.getByLabel('Status').click();
-  await page2.getByText('Break-Cofee').click();
-  await page2.getByLabel('Status').click();
-  await page2.getByText('•Ready').click();
+  await makeCallthreeUnknown('917816615965');
 
+  await login(page2, 'cacsrcti2', 'install123!');
 
-  await makeCalltwo('918578562962');
+  await GenesysCloudLogin(page2, 'automation@pega.com', 'Automation@123');   
 
-  await page1.getByRole('button', { name: 'Accept' }).click();
-  await page1.getByTestId(':case-view:heading').click();
-  await expect(page1.getByTestId(':case-view:heading')).toContainText('Steve');
-  await page1.getByTestId(':summary-item:actions').getByTestId(':menu-button:').click();
-  await page1.getByText('Transfer').click();
-  await page1.getByText('Call and interaction').click();
-  await page1.getByLabel('Reason').click();
-  await page1.getByLabel('On break unselected').getByTestId(':summary-item:primary').click();
-  await page1.getByTestId(':text-area:control').click();
-  await page1.getByTestId(':text-area:control').fill('Test');
-  await page1.getByLabel('Dial pad').click();
-  await page1.getByLabel('Phone number input').click();
-  await page1.getByLabel('Phone number input').fill('2963');
-  await page1.getByRole('button', { name: 'Transfer' }).click();
+  await UnknownCustomerVerification(page1);
 
+  await GenesysCloudTransferCall(page1);
 
-  //await page2.getByText('not verified').first().click();
-  await page2.getByRole('button', { name: 'Accept' }).click();
-  await expect(page2.getByTestId(':case-view:heading')).toContainText('Steve');
-  await page2.getByTestId(':summary-item:actions').getByTestId(':menu-button:').click();
-  await page2.getByLabel('Hang up').getByTestId(':summary-item:primary').click();
+  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Consult' }).click();
+
+  await GCAcceptScreenpop(page2);
+
+  await UnknownCustomerVerification(page2);
+
+  await GenesysCloudLogout(page2);
+
+  await GenesysCloudLogout(page1); 
 
   
-  
-  //await page1.getByTestId(':summary-item:actions').getByTestId(':menu-button:').click();
-  //await page1.getByLabel('Hang up').getByTestId(':summary-item:primary').click(); 
-
-  await page1.getByLabel('Status').click();
-
-  //await page1.locator('//button[@aria-label="Open combobox list"]').click();
-
-  await page1.getByText('Break-Cofee').click();
-  await page1.getByLabel('Status').click();
-  await page1.getByText('Logout').click();
-  await page1.getByRole('button', { name: 'cacsrc11n' }).click();
-  await page1.getByText('Log off').click();
-
-  await page2.getByRole('button', { name: 'Wrap up' }).click();
-  await page2.getByRole('button', { name: 'Submit' }).click();
-
-  await page2.waitForTimeout(3000);
-
-  await page2.getByLabel('Status').click();
-  
-  await page2.getByText('Break-Cofee').click();
-  await page2.getByLabel('Status').click();
-  await page2.getByText('Logout').click();
-  await page2.getByRole('button', { name: 'cacsrc11n' }).click();
-  await page2.getByText('Log off').click();
- 
-  await page1.waitForTimeout(5000);
- 
 });
+
+test('Genesys Cloud transferrrr Only', async () => {
+  
+
+  const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+
+  await login(page1, 'cacsrcti1', 'install123!');  
+    
+  await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
+
+  await makeCallthree('917816615965');
+
+  await GenesysCloudMute(page1);
+
+  await login(page2, 'cacsrcti2', 'install123!');
+
+  await GenesysCloudLogin(page2, 'automation@pega.com', 'Automation@123'); 
+
+  await GCAttachInteraction(page1);
+
+
+  await GenesysCloudTransferCall(page1);
+
+
+  await GenesysCloudBlind(page1);
+  
+  await GCAcceptScreenpop(page2);
+ 
+
+ 
+ //await WrapUp(page2);
+
+ await GenesysCloudDisconnect(page2); 
+  await GenesysCloudLogout(page2);
+
+  await GenesysCloudLogout(page1); 
+  
+
+
+  
+});
+
+test('Genesys Cloud consult V+D', async () => {
+
+  const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+ 
+   await login(page1, 'cacsrcti1', 'install123!');  
+       
+   await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
+
+     await login(page2, 'cacsrcti2', 'install123!');
+
+     await GenesysCloudLogin(page2, 'automation@pega.com', 'Automation@123');  
+ 
+   await makeCallthree('917816615965');
+ 
+   await login(page2, 'cacsrcti2', 'install123!');
+   
+   await GenesysCloudLogin(page2, 'automation@pega.com', 'Automation@123');  
+ 
+   await GenesysCloudMute(page1);
+ 
+   await VerifiedCustomerVerification(page1);
+ 
+   await GCAttachInteraction(page1);
+ 
+   await GenesysCloudTransferCall(page1); 
+ 
+   await GenesysCloudConsult(page1);  
+ 
+   await screenPopVerification(page2); 
+ 
+   await GCAcceptScreenpop(page2);
+
+   await GenesysCloudCompleteConsult(page1);
+ 
+   await GenesysCloudDisconnect(page2); 
+  
+   //await WrapUp(page2);
+ 
+   await GenesysCloudLogout(page2); 
+ 
+ 
+  await GenesysCloudLogout(page1); 
+ 
+ 
+   
+ 
+  // await page1.waitForTimeout(47000); 
+   
+ 
+ 
+   
+ });
+
+ test('Genesys Cloud transfer V+D', async () => {
+
+  const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+ 
+   await login(page1, 'cacsrcti1', 'install123!');  
+       
+     await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
+ 
+   await makeCallthree('917816615965');
+ 
+   await login(page2, 'cacsrcti2', 'install123!');
+   
+   await GenesysCloudLogin(page2, 'automation@pega.com', 'Automation@123');  
+ 
+   await GenesysCloudMute(page1);
+ 
+   await VerifiedCustomerVerification(page1);
+ 
+   await GCAttachInteraction(page1);
+ 
+   await GenesysCloudTransferCall(page1); 
+ 
+   await GenesysCloudBlind(page1);
+ 
+   await screenPopVerification(page2); 
+ 
+   await GCAcceptScreenpop(page2);
+ 
+   await GenesysCloudDisconnect(page2); 
+  
+   await WrapUp(page2);
+ 
+   await GenesysCloudLogout(page2);  
+ 
+  await GenesysCloudLogout(page1); 
+ 
+ 
+ 
+   
+ });
+
+ test('Genesys Cloud callback V+D transfer', async () => {
+ 
+ 
+   const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+    
+      await login(page1, 'cacsrcti1', 'install123!');  
+          
+        await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
+ 
+   await makeCallthree('917816615965');
+ 
+   await login(page2, 'cacsrcti2', 'install123!');
+    
+    await GenesysCloudLogin(page2, 'automation@pega.com', 'Automation@123');     
+ 
+    await VerifiedCustomerVerification(page1);
+ 
+    await GenesysCloudMute(page1);
+   
+    await GenesysCloudDisconnect(page1); 
+ 
+  await GenesysCloudCloseExistingInteraction(page1);
+ 
+  await editCallbackNumber(page1, '8578562984');
+  
+  //await page1.getByLabel('+1 857 856 2984').click(); 
+
+  await page1.getByRole('link', { name: '+1 857 856' }).click();
+
+  //await page1.$x("//*[@label='+18578562984']").then(elements => elements[0].click());
+
+   await GenesysCloudMute(page1); 
+   
+   await GCAttachInteraction(page1);
+   
+ await callBackTransfer(page1);
+ 
+ await blindTransfer(page1);
+   
+   await screenPopVerification(page2); 
+  
+   await GCAcceptScreenpop(page2);
+ 
+   await GenesysCloudDisconnect(page2); 
+   await GenesysCloudLogout(page2);  
+  
+   await GenesysCloudLogout(page1);   
+   
+ });
+
+ test('Genesys Cloud callback V+D consult', async () => {
+ 
+ 
+   const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+    
+      await login(page1, 'cacsrcti1', 'install123!');  
+          
+        await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
+ 
+   await makeCallthree('917816615965');
+ 
+   await login(page2, 'cacsrcti2', 'install123!');
+    
+    await GenesysCloudLogin(page2, 'automation@pega.com', 'Automation@123');     
+ 
+    await VerifiedCustomerVerification(page1);
+ 
+    await GenesysCloudMute(page1);
+   
+    await GenesysCloudDisconnect(page1); 
+ 
+  await GenesysCloudCloseExistingInteraction(page1);
+ 
+  await editCallbackNumber(page1, '8578562984');
+  
+  await page1.getByLabel('+').click();  
+ 
+  await GenesysCloudMute(page1); 
+   
+   await GCAttachInteraction(page1);
+   
+ await callBackTransfer(page1);
+ 
+ await GenesysCloudConsult(page1);
+   
+   await screenPopVerification(page2); 
+  
+   await GCAcceptScreenpop(page2);
+ 
+   await GenesysCloudDisconnect(page2);
+   
+   await GenesysCloudDisconnect(page1);
+   await GenesysCloudLogout(page2);  
+  
+   await GenesysCloudLogout(page1);   
+   
+ });
+
+ test('Genesys Cloud Validate the Event Name in alert TEST-192268', async () => {
+ 
+ 
+   const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+       
+         await login(page1, 'cacsrcti1', 'install123!');  
+             
+           
+ 
+ 
+   await page1.evaluate(() => {
+     const publicevent = event => {
+       var div = document.createElement("div");
+       try {
+         document.getElementById("Ctinotification").remove();
+       } catch (e) {}
+       div.id = "Ctinotification";
+       div.style.background = "green";
+       div.style.zIndex = 100;
+       div.style.wordBreak = "break-word";
+       div.style.width = "300px";
+       div.style.position = "absolute";
+       div.style.right = "488px";
+       div.style.bottom = "200px";
+       div.style.padding = "10px";
+       div.style.paddingTop = "20px";
+       div.style.color = "white";
+ 
+       div.innerHTML = event;
+       div.innerHTML += " Event Name: " + JSON.parse(event).pyEventName + "";
+       var button = document.createElement("button");
+       button.innerHTML = "x";
+       button.style.float = "right";
+       button.style.top = 0;
+       button.style.right = "10px";
+       button.style.position = "absolute";
+       button.style.background = "transparent";
+       button.style.color = "black";
+       button.style.fontWeight = "700";
+       button.style.fontSize = "18px";
+       button.style.border = "0px";
+       button.addEventListener("click", () => {
+         document.getElementById("Ctinotification").style.display = 'none';
+       });
+       div.appendChild(button);
+       document.body.appendChild(div);
+     };
+     PCore.getPubSubUtils().subscribe('PUBLIC CALL STATE EVENT', publicevent);
+   });
+ 
+ 
+   await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
+ 
+   
+ 
+   await makeCallthree('917816615965');
+ 
+   // Function to verify the event name
+   async function verifyEventName(expectedEventName: string) {
+     try {
+       const jsonString = await page1.locator('//*[@id="Ctinotification"]').innerText();
+       
+       // Extract the event name from the string
+       const eventName = jsonString.split(' Event Name: ')[1];
+       const actualEventName = eventName.split('\n')[0];
+       
+       console.log('This is the actual event name:', actualEventName);
+       
+       // Assert the Event Name
+       expect(actualEventName).toBe(expectedEventName);
+       console.log('Event Name matches:', actualEventName);
+   } catch (e) {
+       console.log('Event Name:', expectedEventName, 'is not displayed');
+       throw e; // Re-throw the error to ensure the test fails
+   }
+   }
+   
+   await verifyEventName('Offering');
+   console.log(`Clicked link at Offering: ${new Date().toLocaleString()}`);
+   await page1.waitForTimeout(8000);
+ 
+   await verifyEventName('Connected');
+   console.log(`Clicked link at connected: ${new Date().toLocaleString()}`);
+   
+ 
+   await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Mute' }).click();
+   
+   await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Hold' }).click();
+   await page1.waitForTimeout(2000);
+   await verifyEventName('HELD'); 
+   console.log(`Clicked link at Held: ${new Date().toLocaleString()}`);
+ 
+  
+ 
+  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Hold' }).click();
+  await page1.waitForTimeout(2000);
+  await verifyEventName('RETRIEVED');
+ console.log(`Clicked link at Retrieved: ${new Date().toLocaleString()}`);
+  
+ 
+  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Disconnect' }).click();
+  await page1.waitForTimeout(3000);
+  await verifyEventName('Disconnected');
+  console.log(`Clicked link at Disconnected: ${new Date().toLocaleString()}`);
+  
+  await page1.waitForTimeout(2000);
+  await GenesysCloudLogout(page1);  
+ 
+   
+ });
+
+ //await page1.getByRole('link', { name: '+1 857 856' }).click();

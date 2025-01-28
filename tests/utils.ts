@@ -38,6 +38,44 @@ export async function makeCalltwo(phNumber: string): Promise<void> {
     }
 }
 
+export async function makeCalltwoUknown(phNumber: string): Promise<void> {
+    const Finesse_LoginURL = "https://bosfinnod02da.rpega.com:8445/finesse/api/User/2464";
+    const Finesse_MakeCallURL = "https://bosfinnod02da.rpega.com:8445/finesse/api/User/2464/Dialogs?";
+    const FinesseLogin_Payload = `<User>
+    <state>LOGIN</state>
+    <extension>2964</extension>
+</User>`;
+    const FinesseMakeCall_Payload = `<Dialog>
+   <requestedAction>MAKE_CALL</requestedAction>
+   <fromAddress>2964</fromAddress>
+   <toAddress>${phNumber}</toAddress>
+</Dialog>`;
+
+    try {
+        const loginResponse = await axios.put(Finesse_LoginURL, FinesseLogin_Payload, {
+            headers: {
+                'Content-Type': 'Application/XML',
+                'Authorization': 'Basic MjQ2NDoyOTY0'
+            }
+        });
+        console.log("Login response code: " + loginResponse.status);
+    } catch (error) {
+        console.error(error);
+    }
+
+    try {
+        const makeCallResponse = await axios.post(Finesse_MakeCallURL, FinesseMakeCall_Payload, {
+            headers: {
+                'Content-Type': 'Application/XML',
+                'Authorization': 'Basic MjQ2NDoyOTY0'
+            }
+        });
+        console.log("Make call response code: " + makeCallResponse.status);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export async function makeCallthree(phNumber: string) {
     const Finesse_LoginURL = "https://bosfinnod02da.rpega.com:8445/finesse/api/User/2461";
     const Finesse_MakeCallURL = "https://bosfinnod02da.rpega.com:8445/finesse/api/User/2461/Dialogs?";

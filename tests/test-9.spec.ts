@@ -1,34 +1,53 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, chromium } from '@playwright/test';
 
-test('test', async ({ page }) => {
-  await page.goto('https://lab-02622-bos.lab-internal.pega.com/prweb/app/default/_56mEsR4RqBouCrZGfkkFF8v406BUOZt*/!STANDARD');
-  await page.getByPlaceholder('User name').click();
-  await page.getByPlaceholder('User name').fill('cacsrcti2');
-  await page.getByPlaceholder('User name').press('Tab');
-  await page.getByPlaceholder('Password', { exact: true }).fill('install123!');
-  await page.getByPlaceholder('Password', { exact: true }).press('Enter');
-  await page.getByRole('button', { name: 'Log in' }).click();
-  await page.getByLabel('Phone panel').click();
-  await page.getByLabel('CTI Link').selectOption('12');
-  await page.getByLabel('Extension').click();
-  await page.getByLabel('Extension').fill('2983');
-  await page.getByLabel('Extension').press('Tab');
-  await page.getByLabel('Agent ID').fill('2403');
-  await page.getByLabel('Agent ID').press('Tab');
-  await page.getByLabel('Password').fill('2403');
-  await page.getByRole('button', { name: 'Login' }).click();
-  await page.locator('header').filter({ hasText: '2983' }).click();
-  await page.locator('article').filter({ hasText: '2983StatusArrow down to open' }).getByTestId(':menu-button:').click();
-  await page.getByLabel('Hang up').getByTestId(':summary-item:primary').click();
-  await page.locator('[id="_rvmnk0s55-combobox"]').getByLabel('Open combobox list').click();
-  await page.getByText('Ready').click();
-  await page.locator('article').filter({ hasText: 'Transferred call...Unknown' }).locator('span').first().click();
-  await page.getByText('not verified').first().click();
-  await page.getByRole('button', { name: 'Accept' }).click();
-  await page.getByTestId(':summary-item:primary').click();
-  await page.getByTestId(':combo-box:control').click();
-  await page.getByTestId(':combo-box:control').click();
-  await page.locator('div').filter({ hasText: 'StatusArrow down to open,' }).first().click();
-  await page.getByTestId(':summary-item:actions').getByTestId(':menu-button:').click();
-  await page.getByLabel('Hang up').getByTestId(':summary-item:primary').click();
+import { makeCallthree, makeCalltwo } from './utils';
+import { launchBrowsers, login,GenesysCloudLogin,GenesysCloudLogout,UnknownCustomerVerification,GenesysCloudTransferCall,GCAcceptScreenpop,GCAttachInteraction,WrapUp  } from './utils1';
+
+test.setTimeout(590000);
+test.use({viewport:{width:1600,height:940}})
+
+test('Genesys Cloud transfer', async () => {
+
+  const instanceUrl = 'https://lab-02183-hyd.lab-internal.pega.com/prweb';
+
+  const { browser1, context1, page1, browser2, context2, page2 } = await launchBrowsers(instanceUrl);
+
+  await login(page1, 'cacsrcti1', 'install123!');  
+    
+    await GenesysCloudLogin(page1, 'salavagopi.krishna@in.pega.com', 'Pegacall++2024');
+
+
+
+  await makeCallthree('917816615965');
+
+  await login(page2, 'cacsrcti2', 'install123!');
+
+  await GenesysCloudLogin(page2, 'automation@pega.com', 'Automation@123'); 
+
+  await GCAttachInteraction(page1);
+
+
+  await GenesysCloudTransferCall(page1);
+
+
+  await page1.locator('#genesysCloudsoftPhone').contentFrame().getByRole('button', { name: 'Blind' }).click();
+  
+  await GCAcceptScreenpop(page2);
+ 
+
+ 
+ await WrapUp(page2);
+
+
+  await GenesysCloudLogout(page2);
+
+  await GenesysCloudLogout(page1); 
+
+  
+
+  await page1.waitForTimeout(37000);
+
+
+  
+  
 });
